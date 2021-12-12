@@ -1,44 +1,48 @@
-// Create a webpage with a 16x16 grid of square divs.
-
-
-
-const container = document.querySelector(".gridContainer")
-
-const createtGrid = () => {
-    for(let i=0; i<16; i++){
+const createtGrid = (a=16) => {
+    if(a>100){return reset()}
+    const container = document.querySelector(".gridContainer")
+    for(let i=0; i<a; i++){
         let secondContainer = document.createElement("div")
         secondContainer.id = i+1
         secondContainer.className = "rowContainer"
         container.appendChild(secondContainer)
-        for(let j=0; j<16; j++){
+        for(let j=0; j<a; j++){
             let thirdContainer = document.createElement("div")
             thirdContainer.id = `${i+1}-${j+1}`
             thirdContainer.className = "pixel"
+            thirdContainer.style.width = 960/a
+            thirdContainer.style.height = 960/a
             secondContainer.append(thirdContainer)
         }
     }
+    const pixels = document.querySelectorAll(".pixel")
+    pixels.forEach(pixel => pixel.addEventListener("mouseenter", ()=>pixel.className="pixel-hovered"))
 }
 
-createtGrid()
+const destroyGrid = () => {
+    const container = document.querySelector(".gridContainer")
+    const body = document.querySelector("body")
+    body.removeChild(container)
+    const newContainer = document.createElement("div")
+    newContainer.className = "gridContainer"
+    body.appendChild(newContainer)
+}
 
-/* Set up a “hover” effect so that the grid divs change color when your mouse passes 
-over them, leaving a (pixelated) trail through your grid like a pen would. */
+const reset = () =>{
+    destroyGrid()
+    n=Number(window.prompt("How many squares per side you want? Max: 100"))
+    createtGrid(n)
+}
 
-const pixels = document.querySelectorAll(".pixel")
-pixels.forEach(pixel => pixel.addEventListener("mouseenter", ()=>pixel.className="pixel-hovered"))
-
-
-/* Add a button to the top of the screen which will clear the current grid and send 
-the user a popup asking for the number of squares per side for the new grid. 
-Once entered, the new grid should be generated in the same total space as before (e.g. 960px wide) 
-so that you’ve got a new sketch pad. Tip: Set the limit for the user input to a maximum of 100. 
-A larger number of squares results in more computer resources 
-being used, potentially causing delays, freezing, or crashing that we want to prevent. */
 
 const resetButton = document.querySelector(".resetButton")
-resetButton.addEventListener("click", ()=>{
-    pixels.forEach(pixel => pixel.className="pixel")
-})
+resetButton.addEventListener("click", ()=>reset())
+
+const destroyButton = document.querySelector(".destroyButton")
+destroyButton.addEventListener("click", ()=>destroyGrid())
+
+
+createtGrid()
 
 
 

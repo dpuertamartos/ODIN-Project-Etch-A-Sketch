@@ -1,3 +1,5 @@
+const randomizeRgb = () => Math.floor(Math.random()*256)
+
 const createtGrid = (a=16) => {
     if(a>100){return reset()}
     const container = document.querySelector(".gridContainer")
@@ -12,11 +14,23 @@ const createtGrid = (a=16) => {
             thirdContainer.className = "pixel"
             thirdContainer.style.width = 960/a
             thirdContainer.style.height = 960/a
+            thirdContainer.setAttribute('hovers','0')
             secondContainer.append(thirdContainer)
         }
     }
     const pixels = document.querySelectorAll(".pixel")
-    pixels.forEach(pixel => pixel.addEventListener("mouseenter", ()=>pixel.className="pixel-hovered"))
+    pixels.forEach(pixel => pixel.addEventListener("mouseenter", ()=>{
+        if(pixel.getAttribute('hovers')==="0"){
+            const randomRgb =`rgb(${randomizeRgb()},${randomizeRgb()},${randomizeRgb()})`
+            pixel.style.backgroundColor=randomRgb
+        }
+        else{
+            const rgbToChange = pixel.style.backgroundColor
+            let arrayRGB = rgbToChange.split("(")[1].split(")")[0].split(", ").map(n=>(Number(n)-25.5))
+            pixel.style.backgroundColor=`rgb(${arrayRGB[0]},${arrayRGB[1]},${arrayRGB[2]})`
+        }
+        pixel.setAttribute('hovers', `${Number(pixel.getAttribute('hovers'))+1}`)
+    }))
 }
 
 const destroyGrid = () => {

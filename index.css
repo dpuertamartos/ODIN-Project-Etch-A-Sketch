@@ -1,0 +1,20 @@
+.gridContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.rowContainer{
+    display: flex;
+}
+
+.pixel{
+    background-color: gainsboro;
+    height: 60px;
+    width: 60px;
+}
+
+.pixel-hovered{
+    background-color: black;
+    height: 60px;
+    width: 60px;
+}
